@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row" ng-controller="inboxCtrl" ng-init="init()">
+    <input type="text" value="{{activeUserId}}" id="userID" hidden>
+    <input type="text" value="{{mediaUrl}}" id="mediaUrl" hidden>
+
+
+    <div class="container">
+        <div class="box box-solid">
+            <div class="row">
+                <!--Inbox message list-->
+                <div class="col-md-3 column" style="border-right:1px solid #e8c9c9; height:600px;">
+                    <div class="row">
+                        <button type="button" class="btn btn-warning btn-sm pull-right" ng-click="archiveClicked()">Archive</button>
+                        <button type="button" class="btn btn-success btn-sm pull-right" ng-click="inboxClicked()">Inbox</button>
+                    </div>
+
+                    <div>
+                    <ul class="nav nav-pills nav-stacked" style="height:598px;overflow:auto" ng-if="inboxList">
+                    <li ng-repeat="message in messageList| filter: {messageId:{isArchive: false}}" ng-class="{active}">
+                        <a href="#" ng-click="onMessageSelect($index, message.messageId.id, message.messageId.receiver.id, message.messageId.sender.id)">
+                           <img ng-src="message.image" alt="">
+
+
+
+                            <span ng-bind="message.messageId.receiver.id == activeUserId? message.messageId.sender.username :message.messageId.receiver.username " style="color:#9192d8;font-weight:bold;"></span>
+                            <span ng-bind="message.lastModified| date: format: 'MMM d, y  h:mm:ss a'" class="badge"></span>
+
+
+
+                            <span class="glyphicon glyphicon-minus-sign pull-right" ng-click="archiveMessage(message.messageId.id)"></span>
+                            <span class="glyphicon glyphicon-remove pull-right" ng-click="deleteMessage(message.messageId.id)"></span><br/>
+
+                            <span ng-bind="message.text" style="color:black;;font-size: 80%"></span>
+
+                        </a>
+                    </li>
+                    </ul>
+
+
+
+                        <ul class="nav nav-pills nav-stacked" style="height:598px;overflow:auto" ng-if="!inboxList">
+                    <li ng-repeat="message in messageList| filter: {messageId:{isArchive: true}}" ng-class="{active}">
+                        <a href="#" ng-click="onMessageSelect($index, message.messageId.id, message.messageId.receiver.id, message.messageId.sender.id)">
+                             <span ng-bind="message.messageId.receiver.id == activeUserId? message.messageId.sender.username :message.messageId.receiver.username "></span>
+
+                            <span class="glyphicon glyphicon-remove pull-right" ng-click="deleteMessage(message.messageId.id)"></span>
+                      </a>
+                    </li>
+                    </ul>
+
+                    </div>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                
+                <!--Conversation list-->
+                <div class="col-md-6 column" style="border-right:1px solid #e8c9c9; height:600px">
+                 
+                    <div ng-show="showConversation">
+                        <div class="row">
+                            <h3>
+                            <span ng-bind="anotherUser.username" style="font-weight:bold"></span>
+                            </h3>
+                        </div>
+
+
+                        <div style="height:595px;overflow: auto">
+                    <div ng-repeat="convo in conversationList| orderBy:'-last_modified'" style="width:500px;padding-left: .5cm;">
+
+                        <div ng-if="convo.author == activeUserId" class="row">
+                            <span ng-bind="convo.text" class="pull-right" class="bg-info text-white"></span><br/>
+                            <span class="badge pull-right" ng-bind="convo.lastModified| date: format: 'MMM d, y h:mm:ss a'"></span>
+                        </div>
+                        
+                        <div ng-if="convo.author != activeUserId" class="row">
+                            <span ng-bind="convo.text" class="bg-faded"></span><br/>
+                            <span class="badge" ng-bind="convo.lastModified| date: format: 'MMM d, y h:mm:ss a'"></span>
+                        </div>
+
+                    </div>
+                            </div>
+                        
+                        
+                        
+                    <!--write message-->
+                        <div class="box-footer">
+                        
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." ng-model="messageBody"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="sendClicked()">
+                                Send</button>
+                        </span>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <!--User list-->
+                <div class="col-md-3 column" style="height:600px">
+                    
+                    <ul class="nav nav-pills nav-stacked" style="height:598px;overflow:auto">
+                    <li ng-repeat="user in userList" ng-class="{active}">
+                        <a href="#" ng-click="onUserSelect($index)">
+                            <i class="fa fa-file-text-o bg-orange"></i> <span ng-bind="user.username"></span>
+                        </a>
+                    </li>
+                    </ul>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+
+
+{% endblock %}
