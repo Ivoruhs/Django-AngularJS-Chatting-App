@@ -19,7 +19,7 @@
                     <div>
                     <ul class="nav nav-pills nav-stacked" style="height:598px;overflow:auto" ng-if="inboxList">
                     <li ng-repeat="message in messageList| filter: {messageId:{isArchive: false}}" ng-class="{active}">
-                        <a href="#" ng-click="onMessageSelect($index, message.messageId.id, message.messageId.receiver.id, message.messageId.sender.id)">
+                        <a href="#" ng-click="onMessageSelect(message)">
                            <img ng-src="message.image" alt="">
 
 
@@ -42,7 +42,7 @@
 
                         <ul class="nav nav-pills nav-stacked" style="height:598px;overflow:auto" ng-if="!inboxList">
                     <li ng-repeat="message in messageList| filter: {messageId:{isArchive: true}}" ng-class="{active}">
-                        <a href="#" ng-click="onMessageSelect($index, message.messageId.id, message.messageId.receiver.id, message.messageId.sender.id)">
+                        <a href="#" ng-click="onMessageSelect(message)">
                              <span ng-bind="message.messageId.receiver.id == activeUserId? message.messageId.sender.username :message.messageId.receiver.username "></span>
 
                             <span class="glyphicon glyphicon-remove pull-right" ng-click="deleteMessage(message.messageId.id)"></span>

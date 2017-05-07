@@ -79,12 +79,10 @@ app.controller('inboxCtrl',['$scope','$routeParams','$http', function($scope, $r
 
 
     //on selecting message load conversation
-    $scope.onMessageSelect = function(index, existingMessageId, receiver, sender){
+    $scope.onMessageSelect = function(message){
+        $scope.anotherUser = (message.messageId.receiver.id==$scope.activeUserId)? (message.messageId.sender) : (message.messageId.receiver);
 
-        $scope.anotherUser = (receiver==$scope.activeUserId)? ($scope.messageList[index].messageId.sender) : ($scope.messageList[index].messageId.receiver);
-        $scope.existingUserMessageId = existingMessageId;
-
-        $http.get('http://127.0.0.1:8000/chats/api/allConversations',{ params: { existingUserMessageId: existingMessageId }}).then (function(res){
+        $http.get('http://127.0.0.1:8000/chats/api/allConversations',{ params: { existingUserMessageId: message.messageId.id }}).then (function(res){
         $scope.conversationList = res.data;
         $scope.showConversation = true;
         });
