@@ -5,7 +5,7 @@ from django.test import TestCase
 class ChatsViewsTestCase(TestCase):
     """
     This test case checks if a logged in user can access inbox and if inbox view context
-    contains these keys: user list, media root url and logged in user information
+    contains these keys: user list and logged in user information
     """
     fixtures = ['chats_data.json']
 
@@ -19,4 +19,4 @@ class ChatsViewsTestCase(TestCase):
         self.assertTrue('userList' in resp.context)
         self.assertTrue('activeUserName' in resp.context)
         self.assertTrue('activeUserId' in resp.context)
-        self.assertTrue('mediaUrl' in resp.context)
+
