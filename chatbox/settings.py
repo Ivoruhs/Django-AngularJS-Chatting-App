@@ -131,3 +131,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'accounts/media')
 
 LOGIN_REDIRECT_URL = '/chats/inbox'
+
+
+FIXTURE_DIRS = (
+   os.path.join(BASE_DIR, 'chats/fixtures'),
+)
